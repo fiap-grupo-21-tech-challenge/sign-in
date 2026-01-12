@@ -7,10 +7,9 @@ module.exports = (webpackConfigEnv, argv) => {
     projectName: "sign-in",
     webpackConfigEnv,
     argv,
-    outputSystemJS: false,
   });
 
   return merge(defaultConfig, {
-    // modify the webpack config however you'd like to by adding to this object
+    externals: ['single-spa', '@grupo21/shared-react', 'react', 'react-dom']
   });
 };

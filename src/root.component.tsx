@@ -1,12 +1,14 @@
 import { FormEvent, useState } from "react";
 import { FiArrowLeft, FiCheckCircle } from "react-icons/fi";
-import { loginUser, authErrorMessage } from "@grupo21/utils";
+import { auth } from '@grupo21/shared-react'
+import { navigateToUrl } from "single-spa";
 
 export default function Root(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { authErrorMessage, loginUser } = auth;
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -18,7 +20,7 @@ export default function Root(props) {
     setSubmitting(true);
     try {
       await loginUser({ email: email.trim(), password });
-      window.location.href = '/dashboard'
+      navigateToUrl('/dashboard')
     } catch (err: unknown) {
       setError(authErrorMessage(err));
     } finally {
@@ -31,7 +33,7 @@ export default function Root(props) {
       <header className="mx-auto y-16 flex max-w-md flex-col items-center gap-3 px-4 py-8">
         {/* <Logo /> */}
         <button
-          // href="/"
+          onClick={() => navigateToUrl('/')}
           className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-slate-800"
         >
           <FiArrowLeft className="shrink-0" />
@@ -79,7 +81,7 @@ export default function Root(props) {
 
               <div className="text-right">
                 <button
-                  // href="/ResetSenha"
+                  onClick={() => navigateToUrl('reset-password')}
                   className="text-sm font-semibold text-slate-600 underline hover:text-slate-800"
                 >
                   Esqueceu a senha?
@@ -103,7 +105,7 @@ export default function Root(props) {
             <>
               Não tem uma conta?{" "}
               <button
-                onClick={() => window.location.href = 'sign-up'}
+                onClick={() => navigateToUrl('sign-up')}
                 className="font-medium text-blue-600 hover:underline"
               >
                 Criar conta
